@@ -1,0 +1,48 @@
+{
+  "welcomeMessage": "Welcome to the app!",
+  "auth": {
+    "signIn": {
+      "title": "Sign In",
+      "subtitle": "Welcome back!",
+      "emailPlaceholder": "Email",
+      "passwordPlaceholder": "Password",
+      "button": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign Up"
+    },
+    "signUp": {
+      "title": "Sign Up",
+      "subtitle": "Create your account",
+      "emailPlaceholder": "Email",
+      "passwordPlaceholder": "Password (min 6 characters)",
+      "button": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign In"
+    },
+    "validation": {
+      "allFieldsRequired": "Please fill in all fields",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters"
+    },
+    "alerts": {
+      "error": "Error",
+      "signInFailed": "Sign In Failed",
+      "signUpFailed": "Sign Up Failed",
+      "success": "Success",
+      "signUpSuccess": "Account created! Please check your email to verify your account.",
+      "ok": "OK"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "logout": "Sign Out",
+    "logoutConfirm": "Are you sure you want to sign out?",
+    "cancel": "Cancel",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  }
+}

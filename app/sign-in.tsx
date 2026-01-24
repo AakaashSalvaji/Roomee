@@ -1,0 +1,134 @@
+import { Input } from '@/components/ui/input';
+import { getTextMapping } from '@/constants/text/textMappings';
+import { createPaperTheme } from '@/constants/themes/colors';
+import { useAuth } from '@/contexts/auth-context';
+import { validateSignIn } from '@/utils/auth-validation';
+import { Link, router } from 'expo-router';
+import React, { useMemo, useState } from 'react';
+import { Alert, Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
+
+export default function SignInScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
+
+  // Always use dark theme for sign-in screen
+  const darkTheme = useMemo(() => createPaperTheme('dark'), []);
+
+  const handleSignIn = async () => {
+    const validation = validateSignIn(email, password);
+
+    if (!validation.isValid) {
+      Alert.alert(
+        getTextMapping('auth.alerts.error'),
+        getTextMapping(validation.error || 'auth.validation.allFieldsRequired')
+      );
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await signIn(email.trim(), password);
+    setLoading(false);
+
+    if (error) {
+      Alert.alert(
+        getTextMapping('auth.alerts.signInFailed'),
+        error.message
+      );
+    } else {
+      router.replace('/(tabs)');
+    }
+  };
+
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={[styles.container, { backgroundColor: darkTheme.colors.background }]}>
+        <View style={styles.content}>
+          <Text variant="headlineLarge" style={[styles.title, { color: darkTheme.colors.onBackground }]}>
+            {getTextMapping('auth.signIn.title')}
+          </Text>
+          <Text variant="titleMedium" style={[styles.subtitle, { color: darkTheme.colors.onBackground }]}>
+            {getTextMapping('auth.signIn.subtitle')}
+          </Text>
+
+          <View style={styles.form}>
+            <Input
+              label={getTextMapping('auth.signIn.emailPlaceholder')}
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoComplete="email"
+              editable={!loading}
+            />
+
+            <Input
+              label={getTextMapping('auth.signIn.passwordPlaceholder')}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              autoComplete="password"
+              editable={!loading}
+            />
+
+            <Button
+              mode="contained"
+              onPress={handleSignIn}
+              loading={loading}
+              disabled={loading}
+              buttonColor={darkTheme.colors.primary}
+              textColor={darkTheme.colors.onPrimary}
+              style={styles.button}>
+              {getTextMapping('auth.signIn.button')}
+            </Button>
+
+            <View style={styles.linkContainer}>
+              <Text variant="bodyMedium" style={{ color: darkTheme.colors.onBackground }}>
+                {getTextMapping('auth.signIn.noAccount')}{' '}
+              </Text>
+              <Link href="/sign-up" asChild>
+                <Button mode="text" compact textColor={darkTheme.colors.primary}>
+                  {getTextMapping('auth.signIn.signUpLink')}
+                </Button>
+              </Link>
+            </View>
+          </View>
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 48,
+  },
+  title: {
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  subtitle: {
+    marginBottom: 32,
+    textAlign: 'center',
+    opacity: 0.7,
+  },
+  form: {
+    width: '100%',
+  },
+  button: {
+    marginTop: 8,
+  },
+  linkContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 24,
+  },
+});
