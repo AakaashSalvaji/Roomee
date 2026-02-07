@@ -30,6 +30,8 @@ export const IconsIOS = {
   info: 'info.circle',
   moon: 'moon.fill',
   sun: 'sun.max.fill',
+  eye: 'eye.fill',
+  eyeOff: 'eye.slash.fill',
 } as const;
 
 /**
@@ -59,6 +61,8 @@ export const IconsAndroid = {
   info: 'info',
   moon: 'dark-mode',
   sun: 'sunny',
+  eye: 'visibility',
+  eyeOff: 'visibility-off',
 } as const;
 
 export type IconName = keyof typeof IconsIOS;

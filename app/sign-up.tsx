@@ -1,16 +1,19 @@
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Input } from '@/components/ui/input';
 import { getTextMapping } from '@/constants/text/textMappings';
 import { createPaperTheme } from '@/constants/themes/colors';
 import { useAuth } from '@/contexts/auth-context';
+import { getIconForOS } from '@/utils/get-icon-for-os';
 import { validateSignUp } from '@/utils/auth-validation';
 import { Link, router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Alert, Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { Button, PaperProvider, Text } from 'react-native-paper';
+import { Button, PaperProvider, Text, TextInput } from 'react-native-paper';
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
 
@@ -77,9 +80,21 @@ export default function SignUpScreen() {
                 label={getTextMapping('auth.signUp.passwordPlaceholder')}
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
+                secureTextEntry={!passwordVisible}
                 autoComplete="password-new"
                 editable={!loading}
+                right={
+                  <TextInput.Icon
+                    icon={() => (
+                      <IconSymbol
+                        name={getIconForOS(passwordVisible ? 'eye' : 'eyeOff') as any}
+                        size={24}
+                        color={darkTheme.colors.onSurfaceVariant}
+                      />
+                    )}
+                    onPress={() => setPasswordVisible((prev) => !prev)}
+                  />
+                }
               />
 
               <Button

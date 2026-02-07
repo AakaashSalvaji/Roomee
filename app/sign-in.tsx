@@ -1,16 +1,19 @@
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Input } from '@/components/ui/input';
 import { getTextMapping } from '@/constants/text/textMappings';
 import { createPaperTheme } from '@/constants/themes/colors';
 import { useAuth } from '@/contexts/auth-context';
+import { getIconForOS } from '@/utils/get-icon-for-os';
 import { validateSignIn } from '@/utils/auth-validation';
 import { Link, router } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { Alert, Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Button, PaperProvider, Text, TextInput } from 'react-native-paper';
 
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
 
@@ -38,14 +41,15 @@ export default function SignInScreen() {
         error.message
       );
     } else {
-      router.replace('/(tabs)');
+      router.replace('/home');
     }
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={[styles.container, { backgroundColor: darkTheme.colors.background }]}>
-        <View style={styles.content}>
+    <PaperProvider theme={darkTheme}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={[styles.container, { backgroundColor: darkTheme.colors.background }]}>
+          <View style={styles.content}>
           <Text variant="headlineLarge" style={[styles.title, { color: darkTheme.colors.onBackground }]}>
             {getTextMapping('auth.signIn.title')}
           </Text>
@@ -67,9 +71,21 @@ export default function SignInScreen() {
               label={getTextMapping('auth.signIn.passwordPlaceholder')}
               value={password}
               onChangeText={setPassword}
-              secureTextEntry
+              secureTextEntry={!passwordVisible}
               autoComplete="password"
               editable={!loading}
+              right={
+                <TextInput.Icon
+                  icon={() => (
+                    <IconSymbol
+                      name={getIconForOS(passwordVisible ? 'eye' : 'eyeOff') as any}
+                      size={24}
+                      color={darkTheme.colors.onSurfaceVariant}
+                    />
+                  )}
+                  onPress={() => setPasswordVisible((prev) => !prev)}
+                />
+              }
             />
 
             <Button
@@ -95,8 +111,9 @@ export default function SignInScreen() {
             </View>
           </View>
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
+    </PaperProvider>
   );
 }
 
