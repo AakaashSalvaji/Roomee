@@ -44,5 +44,29 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System"
+  },
+  "home": {
+    "title": "Home",
+    "newHousehold": "New Household"
+  },
+  "household": {
+    "namePlaceholder": "Household name",
+    "nameRequired": "Please enter a household name",
+    "manageMembers": "Manage members",
+    "membersCount": "{{count}} member",
+    "create": "Create",
+    "save": "Save",
+    "createHousehold": "Create Household",
+    "editHousehold": "Edit Household"
+  },
+  "manageMembers": {
+    "title": "Manage members",
+    "searchPlaceholder": "Enter email address",
+    "admin": "Admin",
+    "member": "Member",
+    "back": "Back"
+  },
+  "validation": {
+    "emailInvalid": "Please enter a valid email address"
   }
 }
